@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>晨曦荣辉 - 武器展示</title>
+    <style>
+        /* 全局样式重置 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { height: 100%; overflow: hidden; background-color: #000; }
+
+        /* 通用背景图容器样式 - 完美适配手机端 */
+        .fullscreen-bg {
+            width: 100%;
+            height: 100%;
+            background-size: contain;       /* 修改为contain，确保整图显示不裁切 */
+            background-position: center center;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* 图片1（武器面板）样式 */
+        #view1 {
+            background-image: url('image1.png');
+            z-index: 1;
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        /* 图片1 鼠标悬浮特效 (手机端自动失效，不影响点击) */
+        #view1::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.4) 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        #view1:hover::after { opacity: 1; }
+        
+        /* 悬浮提示文字 (手机端自动隐藏) */
+        #view1::before {
+            content: '点击查看局内效果';
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.8);
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            letter-spacing: 2px;
+            opacity: 0;
+            transition: opacity 0.4s;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            pointer-events: none; /* 防止提示文字遮挡点击 */
+        }
+        @media (min-width: 769px) {
+            #view1:hover::before { opacity: 1; }
+        }
+
+        /* 图片2（游戏实战）样式 */
+        #view2 {
+            background-image: url('image2.png');
+            z-index: 2;
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 第一屏：武器面板 -->
+    <div class="fullscreen-bg" id="view1" onclick="goToActionView()"></div>
+    
+    <!-- 第二屏：游戏实战 -->
+    <div class="fullscreen-bg" id="view2"></div>
+
+    <script>
+        // 点击第一屏：切换到图二实战界面
+        function goToActionView() {
+            document.getElementById('view2').style.opacity = '1';
+            document.getElementById('view2').style.pointerEvents = 'auto';
+        }
+
+        // 点击第二屏：淡出返回到图一
+        document.getElementById('view2').addEventListener('click', function() {
+            this.style.opacity = '0';
+            this.style.pointerEvents = 'none';
+        });
+    </script>
+</body>
+</html>
